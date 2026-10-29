@@ -1,0 +1,13 @@
+id = "xintaro/noctalia-track-accent"
+name = "Track accent for Umbriel"
+version = "1.0.1"
+plugin_api = 24
+author = "xintaro"
+license = "MIT"
+description = "Uses the current MPRIS cover art as the accent of Umbriel's audio-theme border."
+tags = ["service", "media", "nixos"]
+dependencies = ["systemd (busctl)", "dbus (dbus-monitor)", "python3", "imagemagick (magick or convert)"]
+
+[[service]]
+id = "track-accent"
+entry = "service.luau"
