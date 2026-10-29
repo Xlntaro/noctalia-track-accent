@@ -1,7 +1,7 @@
 [[plugin]]
 id = "xintaro/noctalia-track-accent"
 name = "Track Accent for Umbriel"
-version = "1.0.2"
+version = "1.0.3"
 author = "xintaro"
 license = "MIT"
 description = "Uses current MPRIS cover art as the accent for Umbriel's audio-theme border."

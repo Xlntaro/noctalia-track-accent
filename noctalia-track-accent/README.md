@@ -12,7 +12,7 @@ response remain intact.
 | ID | `xintaro/noctalia-track-accent` |
 | Entry | Service: `track-accent` |
 | Plugin API | `24` |
-| Version | `1.0.1` |
+| Version | `1.0.3` |
 
 The service has no widget or panel. It starts automatically when the plugin is
 enabled and restores the previous shader when it is disabled.
@@ -114,6 +114,32 @@ If the directory or `shader.glsl` is missing, the plugin deliberately leaves
 Umbriel unchanged rather than creating or overwriting compositor configuration.
 
 ## Installation and usage
+
+### Add through Noctalia Settings
+
+To install from a Git repository without publishing to the Community source:
+
+1. Open **Settings → Plugins**.
+2. In **Sources**, select **Add Source**.
+3. Enter a unique source name, for example `xintaro-plugins`.
+4. Select **Git** and enter the repository URL, for example
+   `https://github.com/Xlntaro/noctalia-track-accent`.
+   Use the repository URL only; do not use a GitHub `/tree/...` subdirectory
+   URL.
+5. Save the source, ensure its source toggle is enabled, then press **Update**
+   (the circular-arrow button) on that source.
+6. `Track Accent for Umbriel` appears in the **Plugins** section. Turn on its
+   toggle to fetch and start `xintaro/noctalia-track-accent`.
+
+The repository must contain the root `catalog.toml` as well as the
+`noctalia-track-accent/` plugin directory. Noctalia uses the catalog to list
+the plugin before it exports that directory on enable.
+
+To turn the plugin off, use its toggle in **Settings → Plugins**. To disconnect
+the repository entirely, use the custom source's settings menu and choose
+**Remove source**.
+
+### Command line
 
 When developing locally, add the repository containing this directory as a
 path source, then enable the exact plugin id:
