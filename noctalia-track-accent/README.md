@@ -1,9 +1,9 @@
 # Track Accent for Umbriel
 
-Use the current Noctalia media cover as the accent color of Umbriel's
-audio-reactive `audio-theme` window border. The color changes with Noctalia's
-active or pinned MPRIS player while the border's existing spectrum and bass
-response remain intact.
+Use the current Noctalia media cover as up to four accent colors on Umbriel's
+audio-reactive `audio-theme` window border. The colors blend smoothly around
+the border and change with Noctalia's active or pinned MPRIS player while the
+existing spectrum and bass response remain intact.
 
 ## Plugin
 
@@ -12,7 +12,7 @@ response remain intact.
 | ID | `xintaro/noctalia-track-accent` |
 | Entry | Service: `track-accent` |
 | Plugin API | `24` |
-| Version | `1.0.3` |
+| Version | `1.2.0` |
 
 The service has no widget or panel. It starts automatically when the plugin is
 enabled and restores the previous shader when it is disabled.
@@ -131,6 +131,16 @@ To install from a Git repository without publishing to the Community source:
 6. `Track Accent for Umbriel` appears in the **Plugins** section. Turn on its
    toggle to fetch and start `xintaro/noctalia-track-accent`.
 
+Use the gear button on the plugin row to select **Cover color mode**:
+
+- **Multi-color gradient** (default) extracts up to four distinct cover colors
+  and blends them around the border.
+- **Single accent** uses only the strongest cover color, matching the original
+  behavior.
+
+The choice applies immediately to the current cover; changing it does not wait
+for a new track.
+
 The repository must contain the root `catalog.toml` as well as the
 `noctalia-track-accent/` plugin directory. Noctalia uses the catalog to list
 the plugin before it exports that directory on enable.
@@ -194,9 +204,12 @@ home.packages = with pkgs; [ python3 imagemagick ];
 - **Artwork and network:** local `file://` artwork is copied to the plugin's
   private state directory. Remote `http(s)` artwork is downloaded with an
   8 MiB limit and an 8-second timeout. No remote code is downloaded or run.
-- **Color selection:** transparent pixels, near-black, near-white, and weakly
-  saturated colors are rejected when a usable accent exists. A monochrome or
-  unavailable cover falls back to Umbriel's primary palette accent.
+- **Color selection:** the helper selects up to four populous, vivid, and
+  visually distinct colors, orders them by hue, and blends them into a closed
+  gradient around the border. Transparent pixels, near-black, near-white, and
+  weakly saturated colors are rejected when a usable accent exists. A
+  monochrome or unavailable cover falls back to Umbriel's primary palette
+  accent.
 - **Files:** the helper writes only
   `~/.config/umbriel/effects/audio-theme/shader.glsl`, atomically and only if
   the color changed. Before its first write it saves the original shader and
