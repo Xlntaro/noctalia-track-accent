@@ -1,0 +1,6 @@
+{
+  "settings.palette_mode.label": "Cover color mode",
+  "settings.palette_mode.description": "Use one dominant cover color or a gradient of up to four cover colors around the border.",
+  "settings.palette_mode.gradient": "Multi-color gradient",
+  "settings.palette_mode.single": "Single accent"
+}

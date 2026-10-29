@@ -1,12 +1,23 @@
 id = "xintaro/noctalia-track-accent"
 name = "Track accent for Umbriel"
-version = "1.0.3"
+version = "1.2.0"
 plugin_api = 24
 author = "xintaro"
 license = "MIT"
-description = "Uses the current MPRIS cover art as the accent of Umbriel's audio-theme border."
+description = "Uses current MPRIS cover colors for Umbriel's audio-theme border."
 tags = ["service", "media", "nixos"]
 dependencies = ["systemd (busctl)", "dbus (dbus-monitor)", "python3", "imagemagick (magick or convert)"]
+
+[[setting]]
+key = "palette_mode"
+type = "select"
+label_key = "settings.palette_mode.label"
+description_key = "settings.palette_mode.description"
+default = "gradient"
+options = [
+  { value = "gradient", label_key = "settings.palette_mode.gradient" },
+  { value = "single", label_key = "settings.palette_mode.single" },
+]
 
 [[service]]
 id = "track-accent"

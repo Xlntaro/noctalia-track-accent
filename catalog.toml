@@ -1,10 +1,10 @@
 [[plugin]]
 id = "xintaro/noctalia-track-accent"
 name = "Track Accent for Umbriel"
-version = "1.0.3"
+version = "1.2.0"
 author = "xintaro"
 license = "MIT"
-description = "Uses current MPRIS cover art as the accent for Umbriel's audio-theme border."
+description = "Uses current MPRIS cover colors for Umbriel's audio-theme border."
 plugin_api = 24
 tags = ["service", "media", "nixos"]
 dependencies = ["systemd (busctl)", "dbus (dbus-monitor)", "python3", "imagemagick (magick or convert)"]
