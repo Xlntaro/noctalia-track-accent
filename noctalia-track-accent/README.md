@@ -43,6 +43,76 @@ command -v python3 busctl dbus-monitor
 command -v magick || command -v convert
 ```
 
+## Umbriel setup
+
+The plugin intentionally does not create or modify Umbriel configuration. Before
+enabling it, create the `audio-theme` preset directory and its two files:
+
+```sh
+mkdir -p ~/.config/umbriel/effects/audio-theme
+```
+
+Create `~/.config/umbriel/effects/audio-theme/effect.toml`:
+
+```toml
+[effects.preset.audio-theme]
+kind = "border"
+shader = "shader.glsl"
+palette = true
+animated = true
+speed = 1.0
+
+[effects.preset.audio-theme.light]
+spread = 45
+intensity = 0.8
+threshold = 0.4
+```
+
+Create `~/.config/umbriel/effects/audio-theme/shader.glsl`. This is the normal
+palette-based fallback; the plugin saves it before replacing it and restores it
+when disabled:
+
+```glsl
+vec4 border(vec2 uv) {
+  vec2 center = uv - vec2(0.5);
+  float position = atan(center.y, center.x) / 6.2831853 + 0.5;
+  float band = abs(position * 2.0 - 1.0);
+  float signal = umbriel_audio_spectrum(band);
+  float bass = umbriel_audio_spectrum(0.0);
+  vec4 color = umbriel_palette_at(0.0);
+  float brightness = clamp(0.15 + signal * 1.8 + bass * 0.35, 0.0, 1.0);
+  return vec4(color.rgb * color.a * brightness, color.a);
+}
+```
+
+In `~/.config/umbriel/config.toml`, add the preset file to the existing
+`[include].files` array. Do not replace the rest of that array:
+
+```toml
+[include]
+files = [
+  # Keep all existing includes here.
+  "~/.config/umbriel/effects/audio-theme/effect.toml",
+]
+```
+
+Finally, add `border = "audio-theme"` to the existing `[effects]` table (or
+create that table if it is absent):
+
+```toml
+[effects]
+border = "audio-theme"
+```
+
+Validate the result before enabling the plugin:
+
+```sh
+umbriel config validate -c ~/.config/umbriel/config.toml
+```
+
+If the directory or `shader.glsl` is missing, the plugin deliberately leaves
+Umbriel unchanged rather than creating or overwriting compositor configuration.
+
 ## Installation and usage
 
 When developing locally, add the repository containing this directory as a
