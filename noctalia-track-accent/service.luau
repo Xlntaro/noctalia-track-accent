@@ -7,16 +7,49 @@ local helper = noctalia.pluginDir() .. "/noctalia-track-accent.py"
 local dataDir = noctalia.pluginDataDir()
 local shader = "~/.config/umbriel/effects/audio-theme/shader.glsl"
 
-local function paletteMode()
-  return noctalia.getConfig("palette_mode")
+local defaults = {
+  palette_mode = "gradient",
+  idle_mode = "native",
+  silence_brightness = 0.4,
+  dark_color_floor = 0.5,
+  spectrum_gain = 1.8,
+  bass_gain = 0.35,
+  max_colors = 4,
+  gradient_speed = 0.0,
+  fallback_color = "#7C6FDC",
+}
+
+local function setting(key)
+  local value = noctalia.getConfig(key)
+  if value == nil then
+    value = defaults[key]
+  end
+  return tostring(value)
+end
+
+local function helperArgs(action)
+  return {
+    "python3", helper, action,
+    "--mode", setting("palette_mode"),
+    "--idle-mode", setting("idle_mode"),
+    "--silence-brightness", setting("silence_brightness"),
+    "--dark-color-floor", setting("dark_color_floor"),
+    "--spectrum-gain", setting("spectrum_gain"),
+    "--bass-gain", setting("bass_gain"),
+    "--max-colors", setting("max_colors"),
+    "--gradient-speed", setting("gradient_speed"),
+    "--fallback-color", setting("fallback_color"),
+    "--state-dir", dataDir,
+    "--shader", shader,
+  }
 end
 
 local function start()
-  noctalia.runAsync({ "python3", helper, "--watch", "--mode", paletteMode(), "--state-dir", dataDir, "--shader", shader })
+  noctalia.runAsync(helperArgs("--watch"))
 end
 
-local function applyPaletteMode()
-  noctalia.runAsync({ "python3", helper, "--set-mode", "--mode", paletteMode(), "--state-dir", dataDir, "--shader", shader })
+local function applySettings()
+  noctalia.runAsync(helperArgs("--set-settings"))
 end
 
 local function restore()
@@ -32,7 +65,7 @@ function onEnable()
 end
 
 function onConfigChanged()
-  applyPaletteMode()
+  applySettings()
 end
 
 function onExit(_signal, _reason)

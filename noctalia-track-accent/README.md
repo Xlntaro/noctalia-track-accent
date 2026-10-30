@@ -12,7 +12,7 @@ existing spectrum and bass response remain intact.
 | ID | `xintaro/noctalia-track-accent` |
 | Entry | Service: `track-accent` |
 | Plugin API | `24` |
-| Version | `1.2.1` |
+| Version | `1.3.0` |
 
 The service has no widget or panel. It starts automatically when the plugin is
 enabled and restores the previous shader when it is disabled.
@@ -135,15 +135,27 @@ To install from a Git repository without publishing to the Community source:
 6. `Track Accent for Umbriel` appears in the **Plugins** section. Turn on its
    toggle to fetch and start `xintaro/noctalia-track-accent`.
 
-Use the gear button on the plugin row to select **Cover color mode**:
+Use the gear button on the plugin row to configure the border:
 
 - **Multi-color gradient** (default) extracts up to four distinct cover colors
   and blends them around the border.
 - **Single accent** uses only the strongest cover color, matching the original
   behavior.
 
-The choice applies immediately to the current cover; changing it does not wait
+Settings apply immediately to the current cover; changing them does not wait
 for a new track.
+
+| Setting | Default | Effect |
+| --- | --- | --- |
+| Cover color mode | Multi-color gradient | Use one dominant accent or a cover gradient. |
+| Without cover art | Native Umbriel border | Choose the native border, last cover, wallpaper palette, a fixed color, or no border. |
+| Fallback color | `#7C6FDC` | Used only by the fixed-color fallback. |
+| Silence brightness | `0.4` | Base brightness when all audio bands are zero. |
+| Spectrum sensitivity | `1.8` | Strength of the local frequency-band response. |
+| Bass boost | `0.35` | Strength of the lowest band across the whole border. |
+| Maximum cover colors | `4` | Limit a gradient to one through four extracted accents. |
+| Gradient rotation speed | `0.0` | Rotate the gradient; negative values reverse it and zero remains static. |
+| Dark color boost | `0.5` | Advanced minimum peak channel for very dark colors. |
 
 The repository must contain the root `catalog.toml` as well as the
 `noctalia-track-accent/` plugin directory. Noctalia uses the catalog to list
@@ -162,6 +174,54 @@ path source, then enable the exact plugin id:
 noctalia msg plugins source add dev path ~/dev/community-plugins
 noctalia msg plugins enable xintaro/noctalia-track-accent
 ```
+
+### Local development and testing
+
+Check out this feature branch and add the repository root as a path source:
+
+```sh
+git switch configurable-accent
+noctalia msg plugins source add track-accent-dev path "$(pwd)"
+noctalia msg plugins enable xintaro/noctalia-track-accent
+noctalia msg config-reload
+```
+
+A local data-directory plugin or a later-added user source takes precedence if
+the same plugin id exists in multiple sources. The source only needs to be added
+once. After editing Python or the manifest, disable and enable the plugin to
+restart the helper with the checkout's code:
+
+```sh
+noctalia msg plugins disable xintaro/noctalia-track-accent
+noctalia msg plugins enable xintaro/noctalia-track-accent
+noctalia msg config-reload
+```
+
+Run the automated checks from the repository root:
+
+```sh
+noctalia plugins lint noctalia-track-accent
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
+python3 -m py_compile noctalia-track-accent/noctalia-track-accent.py
+umbriel config validate -c ~/.config/umbriel/config.toml
+```
+
+Then open **Settings → Plugins → Track Accent for Umbriel** and exercise this
+short matrix:
+
+1. Play a track and switch between single and gradient modes.
+2. Pause on silence and adjust silence brightness, spectrum sensitivity, and
+   bass boost.
+3. Stop the player and try every **Without cover art** mode; for **Last cover
+   colors**, first play a track with usable artwork.
+4. Set maximum cover colors to 1–4 and use positive, negative, and zero gradient
+   rotation speeds.
+5. Select **Fixed color**, choose a color, then close the player.
+
+The generated file is
+`~/.config/umbriel/effects/audio-theme/shader.glsl`. It should retain the plugin
+marker and update immediately after a setting changes. No separate render
+watcher or Umbriel autostart entry is involved.
 
 For a one-plugin local install, copy this directory under
 `$XDG_DATA_HOME/noctalia/plugins/noctalia-track-accent/`, then run the same
@@ -212,14 +272,15 @@ home.packages = with pkgs; [ python3 imagemagick ];
   visually distinct colors, orders them by hue, and blends them into a closed
   gradient around the border. Transparent pixels, near-black, near-white, and
   weakly saturated colors are rejected when a usable accent exists. A
-  monochrome or unavailable cover leaves Umbriel's native focused border
-  untouched instead of briefly replacing it with the wallpaper palette.
+  monochrome or unavailable cover follows **Without cover art**; its default
+  leaves Umbriel's native focused border untouched.
 - **Files:** the helper writes only
   `~/.config/umbriel/effects/audio-theme/shader.glsl`, atomically and only if
-  the color changed. Before its first write it saves the original shader and
-  its artwork cache under the plugin's Noctalia state directory. It restores
-  the original shader on disable only when the current file still has the
-  plugin marker, so a manual edit is never overwritten.
+  the generated content changed. Before its first write it saves the original
+  shader; settings, the last usable accents, and its artwork cache live under
+  the plugin's Noctalia state directory. It restores the original shader on
+  disable only when the current file still has the plugin marker, so a manual
+  edit is never overwritten.
 - **Processes:** it starts `dbus-monitor`, makes short `busctl` queries, and
   runs ImageMagick only when artwork changes. All subprocesses use argument
   arrays; track titles, URLs, and other media metadata are never shell input.

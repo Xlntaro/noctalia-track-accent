@@ -1,6 +1,6 @@
 id = "xintaro/noctalia-track-accent"
 name = "Track accent for Umbriel"
-version = "1.2.1"
+version = "1.3.0"
 plugin_api = 24
 author = "xintaro"
 license = "MIT"
@@ -18,6 +18,85 @@ options = [
   { value = "gradient", label_key = "settings.palette_mode.gradient" },
   { value = "single", label_key = "settings.palette_mode.single" },
 ]
+
+[[setting]]
+key = "idle_mode"
+type = "select"
+label_key = "settings.idle_mode.label"
+description_key = "settings.idle_mode.description"
+default = "native"
+options = [
+  { value = "native", label_key = "settings.idle_mode.native" },
+  { value = "last_cover", label_key = "settings.idle_mode.last_cover" },
+  { value = "palette", label_key = "settings.idle_mode.palette" },
+  { value = "fixed", label_key = "settings.idle_mode.fixed" },
+  { value = "hidden", label_key = "settings.idle_mode.hidden" },
+]
+
+[[setting]]
+key = "fallback_color"
+type = "color"
+label_key = "settings.fallback_color.label"
+description_key = "settings.fallback_color.description"
+default = "#7C6FDC"
+visible_when = { key = "idle_mode", values = ["fixed"] }
+
+[[setting]]
+key = "silence_brightness"
+type = "double"
+label_key = "settings.silence_brightness.label"
+description_key = "settings.silence_brightness.description"
+default = 0.4
+min = 0.0
+max = 1.0
+
+[[setting]]
+key = "spectrum_gain"
+type = "double"
+label_key = "settings.spectrum_gain.label"
+description_key = "settings.spectrum_gain.description"
+default = 1.8
+min = 0.0
+max = 3.0
+
+[[setting]]
+key = "bass_gain"
+type = "double"
+label_key = "settings.bass_gain.label"
+description_key = "settings.bass_gain.description"
+default = 0.35
+min = 0.0
+max = 1.5
+
+[[setting]]
+key = "max_colors"
+type = "int"
+label_key = "settings.max_colors.label"
+description_key = "settings.max_colors.description"
+default = 4
+min = 1
+max = 4
+visible_when = { key = "palette_mode", values = ["gradient"] }
+
+[[setting]]
+key = "gradient_speed"
+type = "double"
+label_key = "settings.gradient_speed.label"
+description_key = "settings.gradient_speed.description"
+default = 0.0
+min = -0.5
+max = 0.5
+visible_when = { key = "palette_mode", values = ["gradient"] }
+
+[[setting]]
+key = "dark_color_floor"
+type = "double"
+label_key = "settings.dark_color_floor.label"
+description_key = "settings.dark_color_floor.description"
+default = 0.5
+min = 0.0
+max = 1.0
+advanced = true
 
 [[service]]
 id = "track-accent"
