@@ -32,6 +32,15 @@ class ShaderSourceTests(unittest.TestCase):
         self.assertIn("signal * 1.8 + bass * 0.35", source)
         self.assertIn("const int noctalia_track_accent_count = 2;", source)
 
+    def test_missing_cover_preserves_native_umbriel_border(self) -> None:
+        source = PLUGIN.shader_source(())
+
+        self.assertIn(
+            "if (!noctalia_track_accent_available) return umbriel_sample(uv);",
+            source,
+        )
+        self.assertNotIn("umbriel_palette_at(0.0)", source)
+
     def test_generated_shader_has_balanced_delimiters(self) -> None:
         source = PLUGIN.shader_source(((4, 8, 12),) * 4)
 
