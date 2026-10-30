@@ -102,16 +102,17 @@ vec4 noctalia_track_accent_at(float position) {{
 }}
 
 vec4 border(vec2 uv) {{
+  // With no active player/cover, leave Umbriel's focused border untouched.
+  // Returning the native ring avoids a palette-colored focus flash.
+  if (!noctalia_track_accent_available) return umbriel_sample(uv);
+
   vec2 center = uv - vec2(0.5);
   float position = atan(center.y, center.x) / 6.2831853 + 0.5;
   float band = abs(position * 2.0 - 1.0);
   float signal = umbriel_audio_spectrum(band);
   float bass = umbriel_audio_spectrum(0.0);
 
-  // Palette primary is the no-player/no-cover and monochrome fallback.
-  vec4 color = noctalia_track_accent_available
-    ? noctalia_track_accent_at(position)
-    : umbriel_palette_at(0.0);
+  vec4 color = noctalia_track_accent_at(position);
 
   // Keep silence visible even when the artwork accent is almost black. Scaling
   // by the strongest channel retains the tint and saturation of dark colors.

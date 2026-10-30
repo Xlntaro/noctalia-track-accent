@@ -212,8 +212,8 @@ home.packages = with pkgs; [ python3 imagemagick ];
   visually distinct colors, orders them by hue, and blends them into a closed
   gradient around the border. Transparent pixels, near-black, near-white, and
   weakly saturated colors are rejected when a usable accent exists. A
-  monochrome or unavailable cover falls back to Umbriel's primary palette
-  accent.
+  monochrome or unavailable cover leaves Umbriel's native focused border
+  untouched instead of briefly replacing it with the wallpaper palette.
 - **Files:** the helper writes only
   `~/.config/umbriel/effects/audio-theme/shader.glsl`, atomically and only if
   the color changed. Before its first write it saves the original shader and
