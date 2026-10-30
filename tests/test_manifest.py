@@ -29,6 +29,25 @@ class ManifestTests(unittest.TestCase):
                 for option in setting.get("options", ()):
                     self.assertIn(option["label_key"], translations)
 
+    def test_shader_controls_use_fine_grained_integer_percentages(self) -> None:
+        manifest = tomllib.loads((PLUGIN_DIR / "plugin.toml").read_text())
+        settings = {setting["key"]: setting for setting in manifest["setting"]}
+        expected_ranges = {
+            "silence_brightness_percent": (0, 100, 40),
+            "spectrum_gain_percent": (0, 300, 180),
+            "bass_gain_percent": (0, 150, 35),
+            "gradient_speed_percent": (-50, 50, 0),
+            "dark_color_floor_percent": (0, 100, 50),
+        }
+
+        for key, (minimum, maximum, default) in expected_ranges.items():
+            with self.subTest(setting=key):
+                setting = settings[key]
+                self.assertEqual(setting["type"], "int")
+                self.assertEqual(setting["min"], minimum)
+                self.assertEqual(setting["max"], maximum)
+                self.assertEqual(setting["default"], default)
+
 
 if __name__ == "__main__":
     unittest.main()

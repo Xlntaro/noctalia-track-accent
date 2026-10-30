@@ -42,31 +42,31 @@ default = "#7C6FDC"
 visible_when = { key = "idle_mode", values = ["fixed"] }
 
 [[setting]]
-key = "silence_brightness"
-type = "double"
+key = "silence_brightness_percent"
+type = "int"
 label_key = "settings.silence_brightness.label"
 description_key = "settings.silence_brightness.description"
-default = 0.4
-min = 0.0
-max = 1.0
+default = 40
+min = 0
+max = 100
 
 [[setting]]
-key = "spectrum_gain"
-type = "double"
+key = "spectrum_gain_percent"
+type = "int"
 label_key = "settings.spectrum_gain.label"
 description_key = "settings.spectrum_gain.description"
-default = 1.8
-min = 0.0
-max = 3.0
+default = 180
+min = 0
+max = 300
 
 [[setting]]
-key = "bass_gain"
-type = "double"
+key = "bass_gain_percent"
+type = "int"
 label_key = "settings.bass_gain.label"
 description_key = "settings.bass_gain.description"
-default = 0.35
-min = 0.0
-max = 1.5
+default = 35
+min = 0
+max = 150
 
 [[setting]]
 key = "max_colors"
@@ -79,23 +79,23 @@ max = 4
 visible_when = { key = "palette_mode", values = ["gradient"] }
 
 [[setting]]
-key = "gradient_speed"
-type = "double"
+key = "gradient_speed_percent"
+type = "int"
 label_key = "settings.gradient_speed.label"
 description_key = "settings.gradient_speed.description"
-default = 0.0
-min = -0.5
-max = 0.5
+default = 0
+min = -50
+max = 50
 visible_when = { key = "palette_mode", values = ["gradient"] }
 
 [[setting]]
-key = "dark_color_floor"
-type = "double"
+key = "dark_color_floor_percent"
+type = "int"
 label_key = "settings.dark_color_floor.label"
 description_key = "settings.dark_color_floor.description"
-default = 0.5
-min = 0.0
-max = 1.0
+default = 50
+min = 0
+max = 100
 advanced = true
 
 [[service]]

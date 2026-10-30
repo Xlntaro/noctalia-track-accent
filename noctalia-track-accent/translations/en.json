@@ -13,15 +13,15 @@
   "settings.fallback_color.label": "Fallback color",
   "settings.fallback_color.description": "Color used when Without cover art is set to Fixed color.",
   "settings.silence_brightness.label": "Silence brightness",
-  "settings.silence_brightness.description": "Base border brightness when the audio spectrum is zero.",
+  "settings.silence_brightness.description": "Base border brightness when the audio spectrum is zero, from 0% to 100%.",
   "settings.spectrum_gain.label": "Spectrum sensitivity",
-  "settings.spectrum_gain.description": "How strongly local frequency bands brighten the border.",
+  "settings.spectrum_gain.description": "How strongly local frequency bands brighten the border, from 0% to 300%.",
   "settings.bass_gain.label": "Bass boost",
-  "settings.bass_gain.description": "How strongly the lowest frequency band brightens the whole border.",
+  "settings.bass_gain.description": "How strongly the lowest frequency band brightens the whole border, from 0% to 150%.",
   "settings.max_colors.label": "Maximum cover colors",
   "settings.max_colors.description": "Limit the number of distinct cover colors used by the gradient.",
   "settings.gradient_speed.label": "Gradient rotation speed",
-  "settings.gradient_speed.description": "Rotate cover colors around the border. Negative values reverse direction; zero keeps them still.",
+  "settings.gradient_speed.description": "Rotation speed from -50% to 50%. Negative values reverse direction; zero keeps colors still.",
   "settings.dark_color_floor.label": "Dark color boost",
-  "settings.dark_color_floor.description": "Raise very dark cover colors to this minimum peak channel before applying brightness."
+  "settings.dark_color_floor.description": "Raise very dark cover colors to this minimum peak channel, from 0% to 100%, before applying brightness."
 }

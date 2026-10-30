@@ -150,12 +150,12 @@ for a new track.
 | Cover color mode | Multi-color gradient | Use one dominant accent or a cover gradient. |
 | Without cover art | Native Umbriel border | Choose the native border, last cover, wallpaper palette, a fixed color, or no border. |
 | Fallback color | `#7C6FDC` | Used only by the fixed-color fallback. |
-| Silence brightness | `0.4` | Base brightness when all audio bands are zero. |
-| Spectrum sensitivity | `1.8` | Strength of the local frequency-band response. |
-| Bass boost | `0.35` | Strength of the lowest band across the whole border. |
+| Silence brightness | `40%` | Base brightness when all audio bands are zero. |
+| Spectrum sensitivity | `180%` | Strength of the local frequency-band response. |
+| Bass boost | `35%` | Strength of the lowest band across the whole border. |
 | Maximum cover colors | `4` | Limit a gradient to one through four extracted accents. |
-| Gradient rotation speed | `0.0` | Rotate the gradient; negative values reverse it and zero remains static. |
-| Dark color boost | `0.5` | Advanced minimum peak channel for very dark colors. |
+| Gradient rotation speed | `0%` | Rotate the gradient from -50% to 50%; negative values reverse it. |
+| Dark color boost | `50%` | Advanced minimum peak channel for very dark colors. |
 
 The repository must contain the root `catalog.toml` as well as the
 `noctalia-track-accent/` plugin directory. Noctalia uses the catalog to list
