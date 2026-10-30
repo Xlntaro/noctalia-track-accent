@@ -75,7 +75,7 @@ def shader_source(colors: tuple[Rgb, ...]) -> str:
         for index in range(len(accent_colors), 4)
     )
     return f'''{MARKER}
-// Source artwork affects only the border tint. Audio brightness is unchanged.
+// Source artwork affects the border tint; the spectrum still drives brightness.
 const bool noctalia_track_accent_available = {enabled};
 const int noctalia_track_accent_count = {len(colors)};
 {declarations}
@@ -113,9 +113,15 @@ vec4 border(vec2 uv) {{
     ? noctalia_track_accent_at(position)
     : umbriel_palette_at(0.0);
 
-  float brightness = clamp(0.15 + signal * 1.8 + bass * 0.35, 0.0, 1.0);
+  // Keep silence visible even when the artwork accent is almost black. Scaling
+  // by the strongest channel retains the tint and saturation of dark colors.
+  float color_peak = max(max(color.r, color.g), color.b);
+  vec3 visible_color = color_peak > 0.001
+    ? color.rgb * max(1.0, 0.5 / color_peak)
+    : vec3(0.5);
+  float brightness = clamp(0.4 + signal * 1.8 + bass * 0.35, 0.0, 1.0);
   // Umbriel requires premultiplied RGBA from border shaders.
-  return vec4(color.rgb * color.a * brightness, color.a);
+  return vec4(visible_color * color.a * brightness, color.a);
 }}
 '''
 

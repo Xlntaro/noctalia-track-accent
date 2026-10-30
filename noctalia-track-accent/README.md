@@ -12,7 +12,7 @@ existing spectrum and bass response remain intact.
 | ID | `xintaro/noctalia-track-accent` |
 | Entry | Service: `track-accent` |
 | Plugin API | `24` |
-| Version | `1.2.0` |
+| Version | `1.2.1` |
 
 The service has no widget or panel. It starts automatically when the plugin is
 enabled and restores the previous shader when it is disabled.
@@ -80,8 +80,12 @@ vec4 border(vec2 uv) {
   float signal = umbriel_audio_spectrum(band);
   float bass = umbriel_audio_spectrum(0.0);
   vec4 color = umbriel_palette_at(0.0);
-  float brightness = clamp(0.15 + signal * 1.8 + bass * 0.35, 0.0, 1.0);
-  return vec4(color.rgb * color.a * brightness, color.a);
+  float color_peak = max(max(color.r, color.g), color.b);
+  vec3 visible_color = color_peak > 0.001
+    ? color.rgb * max(1.0, 0.5 / color_peak)
+    : vec3(0.5);
+  float brightness = clamp(0.4 + signal * 1.8 + bass * 0.35, 0.0, 1.0);
+  return vec4(visible_color * color.a * brightness, color.a);
 }
 ```
 

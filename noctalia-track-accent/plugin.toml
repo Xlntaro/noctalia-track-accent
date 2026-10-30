@@ -1,6 +1,6 @@
 id = "xintaro/noctalia-track-accent"
 name = "Track accent for Umbriel"
-version = "1.2.0"
+version = "1.2.1"
 plugin_api = 24
 author = "xintaro"
 license = "MIT"
